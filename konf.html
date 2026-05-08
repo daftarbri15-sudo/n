@@ -8,96 +8,130 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
         body {
             padding: 0; margin: 0; width: 100%;
-            font-family: 'Open Sans', sans-serif;
-            background: #DEE7EE;
+            font-family: 'Montserrat', sans-serif;
+            background: #f0f4f8;
             position: fixed;
+            overflow: hidden;
         }
+        
         #popupku {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            width: 100%; height: 100%; background: rgba(0,0,0, 0.4); z-index: 9999;
+            width: 100%; height: 100%; 
+            background: rgba(15, 41, 77, 0.85); 
+            z-index: 9999;
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .animated { animation: bounceIn 1s linear both; }
-        @keyframes bounceIn { 
-            0% { transform: scale(.1); opacity: 1; }
-            70% { transform: scale(1); }
-            100% { transform: scale(1); }
+
+        .animated { 
+            animation: zoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; 
         }
-        .naik { animation: bounceOutUp 1s ease-in both; }
+
+        @keyframes zoomIn { 
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .naik { animation: bounceOutUp 0.7s ease-in both; }
         @keyframes bounceOutUp {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-500px); opacity: 1; }
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100vh); opacity: 0; }
         }
-        /* Penyesuaian jarak kolom biru agar lebih ke bawah */
+
         .box-biru {
-            width: 100%; 
-            min-height: 165px; 
-            border-radius: 15px;
-            background: #2468A5; 
-            padding: 25px 20px; 
-            color: #fff;
-            font-weight: bold; 
-            font-size: 15px; 
+            width: 90%; 
+            min-height: 200px; 
+            border-radius: 25px;
+            background: #fff; /* Menggunakan putih agar text lebih terbaca */
+            padding: 30px 20px; 
+            color: #1a4d7a;
+            font-weight: 600; 
+            font-size: 16px; 
             text-align: center;
-            box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px;
-            margin-top: 10px; /* Jarak diturunkan dari sebelumnya -30px menjadi 10px */
-            text-shadow: #101010 1px 1px 0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            margin-top: 40px;
+            border-bottom: 5px solid #0F78CB;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-custom {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .banner-container {
+            margin-top: 65px;
+            position: relative;
+        }
+
+        .banner-img {
+            width: 100%; 
+            border-radius: 0px 0px 40px 40px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        #typed {
+            display: inline-block;
         }
     </style>
 </head>
 <body>
 
-    <!-- Musik / Audio -->
     <audio hidden id="bsi">
         <source src="bsss.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Popup Image -->
     <div id="popupku">
-        <center>
-            <img id="gambarku" class="animated" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgil5WlWV8L0jCTKbMpSN6oh8mNM64ze2Oq4jAnPOV3NAuczfZaacJHdUw77zmqMLiiQ1KgK5Y4LV2jX7MmSMrykHXppiBZazs683M1EeO3AWClwMwLRt95moVDCqVoXmPWkdMSUAvZw_d8bRDk_IoJCLVeUkoqoDMc4pYJCxwPAGNH-yXEF_AA7IMrUoE/s1080/IMG-20250408-WA0001.jpg" width="60%" style="margin-top: 250px; border-radius: 15px; border: 2px double #0F78CB;" onclick="tutupimg()">
-        </center>
+        <img id="gambarku" class="animated" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgil5WlWV8L0jCTKbMpSN6oh8mNM64ze2Oq4jAnPOV3NAuczfZaacJHdUw77zmqMLiiQ1KgK5Y4LV2jX7MmSMrykHXppiBZazs683M1EeO3AWClwMwLRt95moVDCqVoXmPWkdMSUAvZw_d8bRDk_IoJCLVeUkoqoDMc4pYJCxwPAGNH-yXEF_AA7IMrUoE/s1080/IMG-20250408-WA0001.jpg" width="80%" style="max-width: 400px; border-radius: 25px; border: 5px solid #fff; box-shadow: 0 0 30px rgba(255,255,255,0.2);" onclick="tutupimg()">
     </div>
 
-    <!-- Navigasi -->
-    <nav style="position: fixed; top: 0; left: 0; right: 0; z-index: 999;">
+    <nav class="nav-custom">
         <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3YMtAO_sO0lxX2JKOn54T96v9co39e7fyWuMS-IrWiD7vd_by6Fj1zksWwGzVmxn3GcmPRMO9RiHf3qfm3jHc34aQXlIvP_DG6oqB9kjjL-rCkfWQcac2p0V9Nax9IvM-6q4fVvZIjCF-4tnYdqiJ7UtRq_6_L27dTYs9w0uh69q4AAEtkixHT6az0RA/s1080/IMG-20250408-WA0002.jpg" style="width: 100%;">
     </nav>
 
-    <!-- Banner -->
-    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6L6COOa7f9lbxHo_RddlZdwFCTmk46NxZYlZIvkmUocxb0qiDJEYgCLT7SM7hF98gYKnl9El-5Yor7JfLvOB3k7kLbLMEndhaATBfAGKVC7TDrIaWwFEcxpqCHOCqqLFQPVqB4RAQ0P0m1OiVKrNOdW-jLF_COIFIx6ivgk4MHPUVcCJrb-6lqX7D9NI/s631/IMG-20250408-WA0000.jpg" style="width: 100%; border-radius: 0px 0px 100px 0px; border-bottom: 5px double #F6AA23; margin-top: 60px;">
-
-    <!-- Kolom Biru -->
-    <div class="container">
-        <center>
-            <div id="typed" class="box-biru"></div>
-        </center>
+    <div class="banner-container">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6L6COOa7f9lbxHo_RddlZdwFCTmk46NxZYlZIvkmUocxb0qiDJEYgCLT7SM7hF98gYKnl9El-5Yor7JfLvOB3k7kLbLMEndhaATBfAGKVC7TDrIaWwFEcxpqCHOCqqLFQPVqB4RAQ0P0m1OiVKrNOdW-jLF_COIFIx6ivgk4MHPUVcCJrb-6lqX7D9NI/s631/IMG-20250408-WA0000.jpg" class="banner-img">
     </div>
 
-    <!-- Footer -->
-    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwzhsQd1K7iF1d2s06-jdlmwaZV6_bR1eZiRCjx7LnbIHag5c5iAEOVfgP9UE-lQqv0M2-C7gQ3u6y6C-0E1iLZASRfrNtk7YOeBa_5obrbvmB4yi2MOjPPseRovva7VTIMmt3dXKcdlSDiqBt5-D_T5W1RiloJ5AOct6wnyv4SZI6Cj6Ahfc2j_x3NZA/s1080/1703668668502.png" style="width: 100%; position: fixed; bottom: 0;">
+    <div class="container d-flex justify-content-center">
+        <div id="typed-box" class="box-biru" style="display: none;">
+            <div id="typed"></div>
+        </div>
+    </div>
 
-    <!-- Scripts -->
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgwzhsQd1K7iF1d2s06-jdlmwaZV6_bR1eZiRCjx7LnbIHag5c5iAEOVfgP9UE-lQqv0M2-C7gQ3u6y6C-0E1iLZASRfrNtk7YOeBa_5obrbvmB4yi2MOjPPseRovva7VTIMmt3dXKcdlSDiqBt5-D_T5W1RiloJ5AOct6wnyv4SZI6Cj6Ahfc2j_x3NZA/s1080/1703668668502.png" style="width: 100%; position: fixed; bottom: 0; left: 0;">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.8/typed.min.js"></script>
 
     <script>
         function tutupimg() {
             $("#gambarku").addClass("naik");
-            
             var audio = document.getElementById("bsi");
             audio.play();
 
             setTimeout(() => {
-                $("#popupku").hide();
+                $("#popupku").fadeOut(400);
+                $("#typed-box").fadeIn(600);
+                
                 new Typed('#typed', {
-                    strings: ['', 'Terimakasih Sudah Melakukan Pendaftaran BRI Festival. Sebentar lagi kamu akan dihubungi...'],
-                    typeSpeed: 45,
-                    loop: false,
+                    strings: [
+                        'Terima kasih telah mendaftar <span style="color:#0F78CB; font-weight:700;">BRI Festival</span>. Tim kami akan segera menghubungi Anda. Harap tetap aktifkan nomor WhatsApp Anda.'
+                    ],
+                    typeSpeed: 30,
                     showCursor: false
                 });
-            }, 800);
+            }, 600);
         }
     </script>
 </body>
